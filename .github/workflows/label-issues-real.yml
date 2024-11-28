@@ -6,7 +6,7 @@ on:
 jobs:
   assign-label:
     permissions:
-      issues: read
+      issues: write
     runs-on: ubuntu-latest
     steps:
       - name: Assign label # if a issue is created with word bug in it, then below curl command creates a repo and adds bugs label to the issue.
