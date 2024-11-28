@@ -7,7 +7,7 @@ jobs:
   assign-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign label
+      - name: Assign label # if a issue is created with word bug in it, then below curl command creates a repo and adds bugs label to the issue.
         if: contains(github.event.issue.title, 'bug')
         run: |
           curl -X POST \
@@ -18,3 +18,12 @@ jobs:
               "labels": ["bug"]
             }' \
           --fail
+
+#since there is no permission key added on job or workflow label, so this workflow has full permissions,
+#when you assign permission key to workflow or job level, then default permissions are removed and only those permissions are granted which you 
+#have specified under the permissions key.
+#in line 15 github also uses GITHUB_TOKEN env stores a short lived teken, what ever permission you define on job work flow level, this token will 
+#be assigned same permission for authorization of the post request made to your repo's github api call.
+#when the workflow runs, this curl request makes an api call to post the 'bug' label in your repo's issue section.
+#if the permission match then only the post request will succeed otherwise it will be discarded.
+#this was not the case if permissions were not mentioned since in that case workflow had all permissions as its default nature.
